@@ -37,6 +37,16 @@
               <input class="u-full-width" type="button" :value="book.publisher" readonly>
             </a>
           </div>
+        </div>
+        <div class="row">
+          <div class="six columns">
+            <label for="reviewsInput">Reviews</label>
+            <a :href="reviewsMinisite + '/?bookId=' + book.id" target="_blank">
+              <input class="u-full-width" type="button" value="Ver reseñas" readonly>
+            </a>
+          </div>
+        </div>
+        <div class="row">
           <router-link class="button button-primary" style="margin-top: 20px" to="/">
             Back
           </router-link>
@@ -54,8 +64,9 @@ export default {
   data() {
     return {
       book: {id:'', title:'', edition:'', copyright:'', language:'', author:'', author_id:'', publisher:'', publisher_id:''},
-        authorsMinisite: 'https://authors-minifront.netlify.app',
-        publishersMinisite: 'https://publishers-minifront.netlify.app'
+      authorsMinisite: 'https://authors-minifront.netlify.app',
+      publishersMinisite: 'https://publishers-minifront.netlify.app',
+      reviewsMinisite: 'https://reviews-minifront.netlify.app'
     }
   },
   created() {

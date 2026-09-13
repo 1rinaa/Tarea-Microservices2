@@ -1,0 +1,13 @@
+[build]
+  command = "echo skip-build"
+  functions = "netlify/functions"
+
+[[redirects]]
+  from = "/api/reviews/*"
+  to = "/.netlify/functions/reviews/:splat"
+  status = 200
+
+[[redirects]]
+  from = "/api/reviews"
+  to = "/.netlify/functions/reviews"
+  status = 200
