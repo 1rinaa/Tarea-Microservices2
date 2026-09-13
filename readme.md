@@ -7,6 +7,7 @@
 ---
 
 | Componente | URL |
+|---|---|
 | **Shell** | https://shell-minifront.vercel.app |
 
 ---
@@ -44,6 +45,7 @@ Esta tarea implementa una arquitectura de **micro-frontends** compuesta por:
 ### Shell (compositor)
 
 | Componente | URL |
+|---|---|
 | **Shell** | https://shell-minifront.vercel.app |
 
 ---
