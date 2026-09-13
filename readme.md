@@ -6,7 +6,8 @@
 
 ---
 
- **Shell:** https://shell-minifront.vercel.app 
+| Componente | URL |
+| **Shell** | https://shell-minifront.vercel.app |
 
 ---
 
