@@ -1,0 +1,12 @@
+{
+  "name": "authors-microservice",
+  "compatibility_date": "2026-08-24",
+  "main": "./worker/index.js",
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "authors-microservice-db",
+      "database_id": "444a4a4b-f3ac-4dab-ba76-0081f824c101"
+    }
+  ]
+}

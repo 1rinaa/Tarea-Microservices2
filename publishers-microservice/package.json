@@ -1,0 +1,15 @@
+{
+  "name": "publishers-microservice",
+  "version": "1.0.0",
+  "description": "Tutorial 6",
+  "type": "module",
+  "scripts": {
+    "local": "vercel dev --listen 8789"
+  },
+  "dependencies": {
+    "@libsql/client": "latest"
+  },
+  "devDependencies": {
+    "vercel": "latest"
+  }
+}
