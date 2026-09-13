@@ -2,26 +2,154 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <title>Reviews Example Site</title>
+  <title>Reviews Site</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" href="css/normalize.css">
-  <link rel="stylesheet" href="css/skeleton.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html, body {
+      min-height: 100vh;
+      background: #05070d;
+      color: #e6ecff;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    ::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+    }
+
+    ::-webkit-scrollbar-track {
+    background: #05070d;
+    }
+
+    ::-webkit-scrollbar-thumb {
+    background: rgba(80, 120, 255, 0.25);
+    border-radius: 5px;
+    border: 2px solid #05070d;
+    background-clip: padding-box;
+    transition: background 0.2s;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+    background: rgba(80, 120, 255, 0.55);
+    background-clip: padding-box;
+    }
+
+    ::-webkit-scrollbar-corner {
+    background: #05070d;
+    }
+
+    html {
+    scrollbar-color: rgba(80, 120, 255, 0.4) #05070d;
+    scrollbar-width: thin;
+    }
+
+
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      z-index: -1;
+      background:
+        radial-gradient(ellipse 800px 600px at 15% 10%, rgba(45, 90, 255, 0.15), transparent 60%),
+        radial-gradient(ellipse 700px 500px at 85% 85%, rgba(0, 180, 255, 0.10), transparent 60%),
+        radial-gradient(ellipse 900px 700px at 50% 50%, rgba(20, 40, 120, 0.08), transparent 70%),
+        #05070d;
+      pointer-events: none;
+    }
+
+    .page {
+      max-width: 760px;
+      margin: 0 auto;
+      padding: 40px 24px;
+      min-height: 100vh;
+    }
+
+    .eyebrow {
+      font-size: 0.75em;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: #4d7cff;
+      font-weight: 600;
+      margin-bottom: 12px;
+    }
+
+    h1 {
+      font-size: 2em;
+      font-weight: 600;
+      letter-spacing: -0.02em;
+      color: #ffffff;
+      margin-bottom: 14px;
+      line-height: 1.2;
+    }
+
+    .subtitle {
+      color: #7a8bb0;
+      font-size: 0.95em;
+      line-height: 1.7;
+      margin-bottom: 40px;
+      max-width: 620px;
+    }
+
+    .section { margin-bottom: 40px; }
+
+    .section-title {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 0.85em;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: #7a8bb0;
+      margin-bottom: 16px;
+    }
+
+    .section-icon { display: flex; color: #4d7cff; }
+    .section-icon svg { width: 14px; height: 14px; }
+  </style>
 </head>
 <body>
-  <div class="container" style="margin-top: 5%">
-    <h3>Reviews</h3>
-    <p id="subtitle">Loading reviews...</p>
+  <div class="page">
+    <div class="eyebrow">Opiniones</div>
+    <h1 id="page-title">Reseñas</h1>
+    <p class="subtitle" id="subtitle">Cargando reseñas...</p>
 
-    <review-list></review-list>
+    <div class="section">
+      <h2 class="section-title">
+        <span class="section-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+          </svg>
+        </span>
+        Todas las reseñas
+      </h2>
+      <review-list></review-list>
+    </div>
 
-    <h5 style="margin-top: 30px">Add a review</h5>
-    <review-form></review-form>
+    <div class="section">
+      <h2 class="section-title">
+        <span class="section-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="12" y1="5" x2="12" y2="19"/>
+            <line x1="5" y1="12" x2="19" y2="12"/>
+          </svg>
+        </span>
+        Añadir una reseña
+      </h2>
+      <review-form></review-form>
+    </div>
   </div>
 
   <script>
-    const reviewsApi = 'https://reviews-microservice.netlify.app';  // ← REEMPLAZAR
+    const reviewsApi = 'https://reviews-microservice.netlify.app';
+    const booksApi = 'https://books-microservice.netlify.app';
 
-    // Leer ?bookId= de la URL
     const params = new URLSearchParams(location.search);
     const bookIdFromUrl = params.get('bookId');
 
@@ -33,21 +161,168 @@
         this.attachShadow({ mode: 'open' });
         this.shadowRoot.innerHTML = `
           <style>
-            ul { list-style: none; padding-left: 0; }
-            li {
-              border: 1px solid #ddd;
-              border-radius: 5px;
-              padding: 10px 15px;
-              margin-bottom: 10px;
-              background: #fafafa;
+            :host { display: block; }
+            * { box-sizing: border-box; }
+
+            .list { display: grid; gap: 12px; }
+
+            .review {
+              background: rgba(15, 20, 35, 0.55);
+              border: 1px solid rgba(80, 120, 255, 0.12);
+              border-radius: 14px;
+              padding: 20px 24px;
+              backdrop-filter: blur(10px);
+              transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+              position: relative;
+              overflow: hidden;
             }
-            .header { display: flex; justify-content: space-between; margin-bottom: 5px; }
-            .user { font-weight: bold; }
-            .stars { color: #f5a623; }
-            .date { color: #888; font-size: 0.85em; }
-            .empty { color: #666; font-style: italic; }
+
+            .review::before {
+              content: '';
+              position: absolute;
+              left: 0; top: 0; bottom: 0;
+              width: 3px;
+              background: linear-gradient(180deg, #4d7cff, #1e3a8a);
+              opacity: 0;
+              transition: opacity 0.3s;
+            }
+
+            .review:hover {
+              background: rgba(25, 32, 52, 0.8);
+              border-color: rgba(100, 150, 255, 0.35);
+              transform: translateY(-2px);
+              box-shadow: 0 12px 32px rgba(77, 124, 255, 0.12);
+            }
+
+            .review:hover::before { opacity: 1; }
+
+            .head {
+              display: flex;
+              align-items: flex-start;
+              gap: 14px;
+              margin-bottom: 14px;
+            }
+
+            .avatar {
+              width: 44px;
+              height: 44px;
+              border-radius: 12px;
+              background: linear-gradient(135deg, #1e3a8a, #4d7cff);
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              color: white;
+              font-weight: 600;
+              font-size: 1.1em;
+              flex-shrink: 0;
+              box-shadow: 0 4px 12px rgba(77, 124, 255, 0.3),
+                          inset 0 1px 0 rgba(255, 255, 255, 0.15);
+              letter-spacing: 0;
+            }
+
+            .meta {
+              flex: 1;
+              min-width: 0;
+              display: flex;
+              flex-direction: column;
+              gap: 4px;
+            }
+
+            .user {
+              font-weight: 600;
+              color: #ffffff;
+              font-size: 1em;
+              letter-spacing: -0.01em;
+            }
+
+            .date {
+              color: #7a8bb0;
+              font-size: 0.75em;
+              letter-spacing: 0.02em;
+              text-transform: uppercase;
+              font-weight: 500;
+            }
+
+            .rating-block {
+              display: flex;
+              align-items: center;
+              gap: 8px;
+              margin-left: auto;
+              flex-shrink: 0;
+            }
+
+            .stars {
+              font-size: 1.1em;
+              letter-spacing: 1px;
+              line-height: 1;
+              display: flex;
+              gap: 1px;
+            }
+
+            .star-filled {
+              color: #f5a623;
+              text-shadow: 0 0 12px rgba(245, 166, 35, 0.5);
+            }
+
+            .star-empty {
+              color: rgba(120, 140, 190, 0.2);
+            }
+
+            .rating-num {
+              font-size: 0.85em;
+              font-weight: 600;
+              color: #f5a623;
+              background: rgba(245, 166, 35, 0.1);
+              border: 1px solid rgba(245, 166, 35, 0.25);
+              padding: 3px 8px;
+              border-radius: 6px;
+              letter-spacing: 0.02em;
+            }
+
+            .text {
+              color: #c8d2e8;
+              font-size: 0.92em;
+              line-height: 1.65;
+              padding-left: 58px;
+            }
+
+            .empty {
+              color: #7a8bb0;
+              font-size: 0.9em;
+              padding: 32px 0;
+              display: flex;
+              align-items: center;
+              gap: 12px;
+            }
+
+            .spinner {
+              width: 16px;
+              height: 16px;
+              border: 2px solid rgba(77, 124, 255, 0.2);
+              border-top-color: #4d7cff;
+              border-radius: 50%;
+              animation: spin 0.8s linear infinite;
+              display: inline-block;
+              flex-shrink: 0;
+            }
+
+            @keyframes spin { to { transform: rotate(360deg); } }
+
+            .error {
+              color: #f87171;
+              font-size: 0.9em;
+              padding: 24px 0;
+            }
+
+            @media (max-width: 600px) {
+              .text { padding-left: 0; margin-top: 4px; }
+              .rating-block { width: 100%; margin-left: 0; margin-top: 6px; justify-content: flex-start; }
+              .head { flex-wrap: wrap; }
+            }
           </style>
-          <div id="content">Loading...</div>
+          <div class="content">
+            <div class="empty"><span class="spinner"></span> Cargando reseñas...</div>
+          </div>
         `;
         this.loadReviews();
       }
@@ -59,31 +334,46 @@
 
           const res = await fetch(url, { headers: { 'Accept': 'application/json' } });
           const reviews = await res.json();
-
-          const content = this.shadowRoot.getElementById('content');
+          const content = this.shadowRoot.querySelector('.content');
 
           if (!reviews.length) {
-            content.innerHTML = '<p class="empty">No reviews yet.</p>';
+            content.innerHTML = '<div class="empty">Aún no hay reseñas. ¡Sé el primero!</div>';
             return;
           }
 
           content.innerHTML = `
-            <ul>
-              ${reviews.map(r => `
-                <li>
-                  <div class="header">
-                    <span class="user">${this.escape(r.user_name)}</span>
-                    <span class="date">${new Date(r.created_at).toLocaleDateString()}</span>
+            <div class="list">
+              ${reviews.map(r => {
+                const initial = (r.user_name || '?').charAt(0).toUpperCase();
+                const filled = '★'.repeat(r.rating);
+                const empty = '★'.repeat(5 - r.rating);
+                const dateStr = new Date(r.created_at).toLocaleDateString('es-ES', {
+                  year: 'numeric', month: 'short', day: 'numeric'
+                });
+                return `
+                  <div class="review">
+                    <div class="head">
+                      <div class="avatar">${this.escape(initial)}</div>
+                      <div class="meta">
+                        <span class="user">${this.escape(r.user_name)}</span>
+                        <span class="date">${dateStr}</span>
+                      </div>
+                      <div class="rating-block">
+                        <span class="stars">
+                          <span class="star-filled">${filled}</span><span class="star-empty">${empty}</span>
+                        </span>
+                        <span class="rating-num">${r.rating}/5</span>
+                      </div>
+                    </div>
+                    <div class="text">${this.escape(r.text || 'Sin comentario.')}</div>
                   </div>
-                  <div class="stars">${'★'.repeat(r.rating)}${'☆'.repeat(5 - r.rating)}</div>
-                  <div>${this.escape(r.text || '')}</div>
-                </li>
-              `).join('')}
-            </ul>
+                `;
+              }).join('')}
+            </div>
           `;
         } catch (err) {
-          this.shadowRoot.getElementById('content').innerHTML =
-            '<p class="empty">Error loading reviews: ' + err.message + '</p>';
+          this.shadowRoot.querySelector('.content').innerHTML =
+            '<div class="error">Error al cargar reseñas: ' + err.message + '</div>';
         }
       }
 
@@ -101,67 +391,306 @@
     class ReviewForm extends HTMLElement {
       connectedCallback() {
         this.attachShadow({ mode: 'open' });
+        const needsBookSelect = !bookIdFromUrl;
+
         this.shadowRoot.innerHTML = `
           <style>
-            form { display: flex; flex-direction: column; gap: 10px; max-width: 500px; }
-            label { font-weight: bold; font-size: 0.9em; }
+            :host { display: block; }
+            * { box-sizing: border-box; }
+
+            form {
+              display: flex;
+              flex-direction: column;
+              gap: 18px;
+            }
+
+            .field { display: flex; flex-direction: column; gap: 8px; }
+
+            label {
+              font-size: 0.72em;
+              color: #7a8bb0;
+              letter-spacing: 0.08em;
+              text-transform: uppercase;
+              font-weight: 500;
+            }
+
             input, textarea, select {
-              width: 100%; padding: 8px;
-              border: 1px solid #ccc; border-radius: 4px;
-              font-size: 1em; font-family: inherit;
+              width: 100%;
+              padding: 12px 14px;
+              border: 1px solid rgba(80, 120, 255, 0.15);
+              border-radius: 10px;
+              background: rgba(15, 20, 35, 0.5);
+              color: #e6ecff;
+              font-size: 0.95em;
+              font-family: inherit;
+              transition: all 0.25s;
+              outline: none;
             }
+
+            input:focus, textarea:focus, select:focus {
+              border-color: rgba(100, 150, 255, 0.5);
+              background: rgba(20, 28, 48, 0.7);
+              box-shadow: 0 0 0 3px rgba(77, 124, 255, 0.1);
+            }
+
+            input::placeholder, textarea::placeholder {
+              color: #4a5878;
+            }
+
+            textarea { resize: vertical; min-height: 90px; }
+
+            select option {
+              background: #0f1424;
+              color: #e6ecff;
+            }
+
+            /* ⭐ Star picker */
+            .star-picker {
+              display: flex;
+              align-items: center;
+              gap: 8px;
+              padding: 12px 16px;
+              background: rgba(15, 20, 35, 0.5);
+              border: 1px solid rgba(80, 120, 255, 0.15);
+              border-radius: 10px;
+              transition: all 0.25s;
+            }
+
+            .star-picker:hover {
+              border-color: rgba(100, 150, 255, 0.35);
+            }
+
+            .star-picker .stars {
+              display: flex;
+              gap: 4px;
+              cursor: pointer;
+              user-select: none;
+            }
+
+            .star-picker .star {
+              width: 30px;
+              height: 30px;
+              cursor: pointer;
+              transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+              fill: rgba(120, 140, 190, 0.25);
+              stroke: none;
+              flex-shrink: 0;
+            }
+
+            .star-picker .star:hover {
+              transform: scale(1.15);
+            }
+
+            .star-picker .star.active {
+              fill: #f5a623;
+              filter: drop-shadow(0 0 8px rgba(245, 166, 35, 0.6));
+            }
+
+            .star-picker .star.preview {
+              fill: #f5a623;
+              filter: drop-shadow(0 0 6px rgba(245, 166, 35, 0.4));
+              transform: scale(1.05);
+            }
+
+            .star-picker .rating-text {
+              margin-left: auto;
+              font-size: 0.85em;
+              font-weight: 600;
+              color: #f5a623;
+              letter-spacing: 0.02em;
+              min-width: 90px;
+              text-align: right;
+              transition: all 0.2s;
+            }
+
+            .star-picker .rating-text.muted {
+              color: #4a5878;
+              font-weight: 500;
+            }
+
             button {
-              padding: 10px 20px; background: #33c3f0; color: white;
-              border: none; border-radius: 4px; cursor: pointer;
-              font-size: 1em; font-weight: bold;
+              padding: 12px 24px;
+              background: linear-gradient(135deg, rgba(77, 124, 255, 0.9), rgba(30, 58, 138, 0.9));
+              color: white;
+              border: 1px solid rgba(120, 160, 255, 0.4);
+              border-radius: 10px;
+              cursor: pointer;
+              font-size: 0.9em;
+              font-weight: 600;
+              font-family: inherit;
+              letter-spacing: 0.01em;
+              transition: all 0.25s;
+              box-shadow: 0 8px 24px rgba(77, 124, 255, 0.2);
+              align-self: flex-start;
+              display: flex;
+              align-items: center;
+              gap: 8px;
             }
-            button:hover { background: #1eaedb; }
-            .msg { font-size: 0.9em; margin-top: 5px; }
-            .msg.ok { color: green; }
-            .msg.err { color: red; }
+
+            button:hover {
+              background: linear-gradient(135deg, rgba(90, 140, 255, 1), rgba(40, 70, 160, 1));
+              box-shadow: 0 12px 30px rgba(77, 124, 255, 0.35);
+              transform: translateY(-1px);
+            }
+
+            button:active { transform: translateY(0); }
+
+            .msg {
+              font-size: 0.85em;
+              margin-top: 4px;
+              min-height: 1.2em;
+            }
+
+            .msg.ok { color: #4ade80; }
+            .msg.err { color: #f87171; }
           </style>
           <form id="form">
-            <div>
-              <label for="user">Your name</label>
-              <input type="text" id="user" required>
+            ${needsBookSelect ? `
+              <div class="field">
+                <label for="bookId">Libro</label>
+                <select id="bookId" required>
+                  <option value="">Cargando libros...</option>
+                </select>
+              </div>
+            ` : ''}
+
+            <div class="field">
+              <label for="user">Tu nombre</label>
+              <input type="text" id="user" placeholder="Ej. Ana" required>
             </div>
-            <div>
-              <label for="rating">Rating</label>
-              <select id="rating" required>
-                <option value="5">★★★★★ (5)</option>
-                <option value="4">★★★★☆ (4)</option>
-                <option value="3">★★★☆☆ (3)</option>
-                <option value="2">★★☆☆☆ (2)</option>
-                <option value="1">★☆☆☆☆ (1)</option>
-              </select>
+
+            <div class="field">
+              <label>Calificación</label>
+              <div class="star-picker">
+                <div class="stars" id="stars">
+                  <svg class="star" data-value="1" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                  <svg class="star" data-value="2" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                  <svg class="star" data-value="3" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                  <svg class="star" data-value="4" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                  <svg class="star" data-value="5" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                </div>
+                <span class="rating-text muted" id="ratingText">Sin calificar</span>
+              </div>
             </div>
-            <div>
-              <label for="text">Comment</label>
-              <textarea id="text" rows="3"></textarea>
+
+            <div class="field">
+              <label for="text">Comentario</label>
+              <textarea id="text" placeholder="¿Qué te pareció el libro?"></textarea>
             </div>
-            <button type="submit">Submit review</button>
+
+            <button type="submit">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="22" y1="2" x2="11" y2="13"/>
+                <polygon points="22 2 15 22 11 13 2 9 22 2"/>
+              </svg>
+              Enviar reseña
+            </button>
             <div class="msg" id="msg"></div>
           </form>
         `;
 
+        this.rating = 0;
+        this.hoverRating = 0;
+        this.setupStarPicker();
         this.shadowRoot.getElementById('form').addEventListener('submit', (e) => this.submit(e));
+
+        if (needsBookSelect) {
+          this.loadBooks();
+        }
+      }
+
+      setupStarPicker() {
+        const stars = this.shadowRoot.querySelectorAll('#stars .star');
+        const ratingText = this.shadowRoot.getElementById('ratingText');
+
+        const labels = {
+          1: 'Malo',
+          2: 'Regular',
+          3: 'Bueno',
+          4: 'Muy bueno',
+          5: 'Excelente'
+        };
+
+        const render = () => {
+          const value = this.hoverRating || this.rating;
+          stars.forEach(s => {
+            const v = parseInt(s.dataset.value);
+            s.classList.toggle('active', v <= this.rating);
+            s.classList.toggle('preview', this.hoverRating > 0 && v <= this.hoverRating && v > this.rating);
+          });
+
+          if (value > 0) {
+            ratingText.textContent = labels[value] + ' · ' + value + '/5';
+            ratingText.classList.remove('muted');
+          } else {
+            ratingText.textContent = 'Sin calificar';
+            ratingText.classList.add('muted');
+          }
+        };
+
+        stars.forEach(star => {
+          star.addEventListener('click', () => {
+            this.rating = parseInt(star.dataset.value);
+            render();
+          });
+
+          star.addEventListener('mouseenter', () => {
+            this.hoverRating = parseInt(star.dataset.value);
+            render();
+          });
+        });
+
+        const starsContainer = this.shadowRoot.getElementById('stars');
+        starsContainer.addEventListener('mouseleave', () => {
+          this.hoverRating = 0;
+          render();
+        });
+
+        render();
+      }
+
+      async loadBooks() {
+        try {
+          const res = await fetch(booksApi + '/api/books', {
+            headers: { 'Accept': 'application/json' }
+          });
+          const books = await res.json();
+          const select = this.shadowRoot.getElementById('bookId');
+          select.innerHTML = '<option value="">— Seleccioná un libro —</option>' +
+            books.map(b => `<option value="${b.id}">${b.title}</option>`).join('');
+        } catch (err) {
+          this.shadowRoot.getElementById('bookId').innerHTML =
+            '<option value="">Error cargando libros</option>';
+        }
       }
 
       async submit(e) {
         e.preventDefault();
         const msg = this.shadowRoot.getElementById('msg');
-        msg.textContent = 'Sending...';
+
+        if (!this.rating) {
+          msg.textContent = 'Por favor seleccioná una calificación.';
+          msg.className = 'msg err';
+          return;
+        }
+
+        msg.textContent = 'Enviando...';
         msg.className = 'msg';
 
+        const selectEl = this.shadowRoot.getElementById('bookId');
+        const bookId = bookIdFromUrl
+          ? parseInt(bookIdFromUrl)
+          : (selectEl ? parseInt(selectEl.value) : null);
+
         const body = {
-          bookId: bookIdFromUrl ? parseInt(bookIdFromUrl) : null,
+          bookId: bookId,
           user: this.shadowRoot.getElementById('user').value.trim(),
-          rating: parseInt(this.shadowRoot.getElementById('rating').value),
+          rating: this.rating,
           text: this.shadowRoot.getElementById('text').value.trim()
         };
 
-        if (!body.bookId) {
-          msg.textContent = 'Falta el bookId en la URL (?bookId=1)';
+        if (!body.bookId || isNaN(body.bookId)) {
+          msg.textContent = 'Por favor seleccioná un libro.';
           msg.className = 'msg err';
           return;
         }
@@ -174,13 +703,17 @@
           });
           if (!res.ok) throw new Error('HTTP ' + res.status);
 
-          msg.textContent = '✓ Review submitted!';
+          msg.textContent = '✓ ¡Reseña enviada!';
           msg.className = 'msg ok';
           this.shadowRoot.getElementById('form').reset();
 
-          // Recargar la lista
-          document.querySelector('review-list').shadowRoot.innerHTML = 'Reloading...';
-          document.querySelector('review-list').loadReviews();
+          // Resetear el star picker
+          this.rating = 0;
+          this.hoverRating = 0;
+          this.setupStarPicker();
+
+          const list = document.querySelector('review-list');
+          await list.loadReviews();
         } catch (err) {
           msg.textContent = 'Error: ' + err.message;
           msg.className = 'msg err';
@@ -192,10 +725,13 @@
     // ------------------------------------------------------------------
     // Subtítulo dinámico
     // ------------------------------------------------------------------
+    const titleEl = document.getElementById('page-title');
+    const subtitleEl = document.getElementById('subtitle');
     if (bookIdFromUrl) {
-      document.getElementById('subtitle').textContent = 'Reviews for book #' + bookIdFromUrl;
+      titleEl.textContent = 'Reseñas del libro #' + bookIdFromUrl;
+      subtitleEl.textContent = 'Opiniones de lectores sobre este título';
     } else {
-      document.getElementById('subtitle').textContent = 'All reviews';
+      subtitleEl.textContent = 'Opiniones de lectores sobre los libros del catálogo';
     }
   </script>
 </body>

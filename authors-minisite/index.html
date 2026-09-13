@@ -2,66 +2,432 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <title>Authors Example Site</title>
+  <title>Authors Site</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" href="css/normalize.css">
-  <link rel="stylesheet" href="css/skeleton.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.14.9/dist/cdn.min.js"></script>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html, body {
+      min-height: 100vh;
+      background: #05070d;
+      color: #e6ecff;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    ::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+    }
+
+    ::-webkit-scrollbar-track {
+    background: #05070d;
+    }
+
+    ::-webkit-scrollbar-thumb {
+    background: rgba(80, 120, 255, 0.25);
+    border-radius: 5px;
+    border: 2px solid #05070d;
+    background-clip: padding-box;
+    transition: background 0.2s;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+    background: rgba(80, 120, 255, 0.55);
+    background-clip: padding-box;
+    }
+
+    ::-webkit-scrollbar-corner {
+    background: #05070d;
+    }
+
+    html {
+    scrollbar-color: rgba(80, 120, 255, 0.4) #05070d;
+    scrollbar-width: thin;
+    }
+
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      z-index: -1;
+      background:
+        radial-gradient(ellipse 800px 600px at 15% 10%, rgba(45, 90, 255, 0.15), transparent 60%),
+        radial-gradient(ellipse 700px 500px at 85% 85%, rgba(0, 180, 255, 0.10), transparent 60%),
+        radial-gradient(ellipse 900px 700px at 50% 50%, rgba(20, 40, 120, 0.08), transparent 70%),
+        #05070d;
+      pointer-events: none;
+    }
+
+    .page {
+      max-width: 760px;
+      margin: 0 auto;
+      padding: 40px 24px;
+      min-height: 100vh;
+    }
+
+    /* Header */
+    .eyebrow {
+      font-size: 0.75em;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: #4d7cff;
+      font-weight: 600;
+      margin-bottom: 12px;
+    }
+
+    h1 {
+      font-size: 2em;
+      font-weight: 600;
+      letter-spacing: -0.02em;
+      color: #ffffff;
+      margin-bottom: 14px;
+      line-height: 1.2;
+    }
+
+    .subtitle {
+      color: #7a8bb0;
+      font-size: 0.95em;
+      line-height: 1.7;
+      margin-bottom: 40px;
+      max-width: 620px;
+    }
+
+    /* Cards list */
+    .cards {
+      display: grid;
+      gap: 10px;
+    }
+
+    .card {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      background: rgba(15, 20, 35, 0.5);
+      border: 1px solid rgba(80, 120, 255, 0.1);
+      padding: 18px 22px;
+      border-radius: 12px;
+      text-decoration: none;
+      color: inherit;
+      transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+      backdrop-filter: blur(10px);
+      position: relative;
+      overflow: hidden;
+      cursor: pointer;
+    }
+
+    .card::before {
+      content: '';
+      position: absolute;
+      left: 0; top: 0; bottom: 0;
+      width: 3px;
+      background: linear-gradient(180deg, #4d7cff, #1e3a8a);
+      opacity: 0;
+      transition: opacity 0.25s;
+    }
+
+    .card:hover {
+      background: rgba(25, 32, 52, 0.75);
+      border-color: rgba(100, 150, 255, 0.3);
+      transform: translateX(2px);
+    }
+
+    .card:hover::before { opacity: 1; }
+
+    .card .icon {
+      width: 42px;
+      height: 42px;
+      border-radius: 10px;
+      background: rgba(77, 124, 255, 0.1);
+      border: 1px solid rgba(100, 150, 255, 0.2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      color: #7ba3ff;
+      transition: all 0.25s;
+    }
+
+    .card:hover .icon {
+      background: rgba(77, 124, 255, 0.18);
+      color: #a8c0ff;
+      box-shadow: 0 0 20px rgba(77, 124, 255, 0.25);
+    }
+
+    .card .icon svg { width: 20px; height: 20px; }
+
+    .card .info { flex: 1; min-width: 0; }
+
+    .card .info h3 {
+      font-size: 1em;
+      font-weight: 500;
+      color: #ffffff;
+      margin-bottom: 3px;
+      letter-spacing: -0.01em;
+    }
+
+    .card .info p {
+      color: #7a8bb0;
+      font-size: 0.82em;
+    }
+
+    .card .arrow {
+      color: #4a5878;
+      transition: all 0.25s;
+      display: flex;
+      align-items: center;
+      flex-shrink: 0;
+    }
+
+    .card .arrow svg { width: 18px; height: 18px; }
+
+    .card:hover .arrow {
+      color: #7ba3ff;
+      transform: translateX(4px);
+    }
+
+    /* Back link */
+    .back-top {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      color: #7a8bb0;
+      text-decoration: none;
+      font-size: 0.85em;
+      font-weight: 500;
+      padding: 8px 14px;
+      border-radius: 8px;
+      border: 1px solid rgba(80, 120, 255, 0.12);
+      background: rgba(15, 20, 35, 0.5);
+      transition: all 0.25s;
+      margin-bottom: 32px;
+      cursor: pointer;
+    }
+
+    .back-top:hover {
+      color: #e6ecff;
+      border-color: rgba(100, 150, 255, 0.35);
+      background: rgba(25, 32, 52, 0.75);
+    }
+
+    .back-top svg { width: 14px; height: 14px; }
+
+    /* Detail */
+    .detail-header { margin-bottom: 40px; }
+
+    .section { margin-bottom: 40px; }
+
+    .section-title {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 0.85em;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: #7a8bb0;
+      margin-bottom: 16px;
+    }
+
+    .section-icon { display: flex; color: #4d7cff; }
+    .section-icon svg { width: 14px; height: 14px; }
+
+    .fields {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-bottom: 24px; 
+    }
+
+    .field {
+      background: rgba(15, 20, 35, 0.5);
+      border: 1px solid rgba(80, 120, 255, 0.1);
+      border-radius: 10px;
+      padding: 16px 18px;
+    }
+
+    .field label {
+      display: block;
+      font-size: 0.72em;
+      color: #7a8bb0;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      font-weight: 500;
+      margin-bottom: 6px;
+    }
+
+    .field .value {
+      color: #e6ecff;
+      font-size: 0.95em;
+      font-weight: 500;
+    }
+
+    /* Link cards (reutiliza .card) */
+    .links-grid { display: grid; gap: 10px; }
+
+    /* Loading */
+    .loading {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      color: #7a8bb0;
+      font-size: 0.9em;
+      padding: 40px 0;
+    }
+
+    .spinner {
+      width: 16px;
+      height: 16px;
+      border: 2px solid rgba(77, 124, 255, 0.2);
+      border-top-color: #4d7cff;
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+    }
+
+    .title-row {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      flex-wrap: wrap;
+    }
+
+    @keyframes spin { to { transform: rotate(360deg); } }
+  </style>
 </head>
 <body>
-  <div class="container" x-data="authorsApp()" x-init="init()">
 
-    <div class="row" x-show="view === 'list'" style="margin-top: 5%">
-      <h3>Authors Information</h3>
-      This section presents information about the authors of books
-      <ul>
+  <div class="page" x-data="authorsApp()" x-init="init()">
+
+    <!-- ============ LIST VIEW ============ -->
+    <div x-show="view === 'list'">
+      <div class="eyebrow">Colección</div>
+      <h1>Autores</h1>
+      <p class="subtitle">Explora los autores del catálogo de libros</p>
+
+      <div x-show="authors.length" class="cards">
         <template x-for="a in authors" :key="a.id">
-          <li><a href="#" @click.prevent="location.hash = '/show/' + a.id" x-text="a.author"></a></li>
+          <a href="#" class="card" @click.prevent="location.hash = '/show/' + a.id">
+            <div class="icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+                <circle cx="12" cy="7" r="4"/>
+              </svg>
+            </div>
+            <div class="info">
+              <h3 x-text="a.author"></h3>
+              <p x-text="a.nationality + ' · ' + a.birth_year"></p>
+            </div>
+            <div class="arrow">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="5" y1="12" x2="19" y2="12"/>
+                <polyline points="12 5 19 12 12 19"/>
+              </svg>
+            </div>
+          </a>
         </template>
-      </ul>
+      </div>
+
+      <div x-show="!authors.length" class="loading">
+        <div class="spinner"></div>
+        <span>Cargando autores...</span>
+      </div>
     </div>
 
-    <div class="row" x-show="view === 'detail'" style="margin-top: 5%">
-      <div class="eleven column">
-        <h4 x-text="author.author"></h4>
-        <h5>Author's details</h5>
-        <form>
-          <div class="row">
-            <div class="six columns">
-              <label>ID</label>
-              <input class="u-full-width" type="text" :value="author.id" readonly>
-            </div>
-            <div class="six columns">
-              <label>Nationality</label>
-              <input class="u-full-width" type="text" :value="author.nationality" readonly>
-            </div>
+    <!-- ============ DETAIL VIEW ============ -->
+    <div x-show="view === 'detail'">
+      <a href="#" class="back-top" @click.prevent="location.hash = '/'">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="19" y1="12" x2="5" y2="12"/>
+          <polyline points="12 19 5 12 12 5"/>
+        </svg>
+        Volver a autores
+      </a>
+
+      <div class="detail-header">
+        <div class="eyebrow">Detalle del autor</div>
+        <div class="title-row">
+          <h1 x-text="author.author"></h1>
+        </div>
+      </div>
+      
+      <!-- Información -->
+      <div class="section">
+        <h2 class="section-title">
+          <span class="section-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="10"/>
+              <line x1="12" y1="16" x2="12" y2="12"/>
+              <line x1="12" y1="8" x2="12.01" y2="8"/>
+            </svg>
+          </span>
+          Información
+        </h2>
+
+        <div class="fields">
+          <div class="field">
+            <label>ID</label>
+            <div class="value" x-text="author.id"></div>
           </div>
-          <div class="row">
-            <div class="six columns">
-              <label>Birth Year</label>
-              <input class="u-full-width" type="text" :value="author.birth_year" readonly>
-            </div>
-            <div class="six columns">
-              <label>Fields</label>
-              <input class="u-full-width" type="text" :value="author.fields" readonly>
-            </div>
+          <div class="field">
+            <label>Nacionalidad</label>
+            <div class="value" x-text="author.nationality"></div>
           </div>
-        </form>
-        <h5>Books</h5>
-        <ul>
+          <div class="field">
+            <label>Año de nacimiento</label>
+            <div class="value" x-text="author.birth_year"></div>
+          </div>
+          <div class="field">
+            <label>Áreas de especialización</label>
+            <div class="value" x-text="author.fields"></div>
+          </div>
+        </div>
+
+      <!-- Libros del autor -->
+      <div class="section">
+        <h2 class="section-title">
+          <span class="section-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/>
+              <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>
+            </svg>
+          </span>
+          Libros publicados
+        </h2>
+
+        <div class="links-grid">
           <template x-for="b in author.books" :key="b.book_id">
-            <li><a :href="booksMinisite + '/#/show/' + b.book_id" x-text="b.title" target="_blank"></a></li>
+            <a :href="booksMinisite + '/#/show/' + b.book_id" target="_blank" rel="noopener" class="card">
+              <div class="icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/>
+                  <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>
+                </svg>
+              </div>
+              <div class="info">
+                <h3 x-text="b.title"></h3>
+                <p>Ver en el catálogo de libros</p>
+              </div>
+              <div class="arrow">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <line x1="5" y1="12" x2="19" y2="12"/>
+                  <polyline points="12 5 19 12 12 19"/>
+                </svg>
+              </div>
+            </a>
           </template>
-        </ul>
-        <a class="button button-primary" href="#" @click.prevent="location.hash = '/'">Back</a>
+        </div>
       </div>
     </div>
 
   </div>
 
   <script>
-    const authorsApi = 'https://authors-microservice.irina-rivera.workers.dev';  
-    const booksMinisite = 'https://books-minifront.netlify.app/';
+    const authorsApi = 'https://authors-microservice.irina-rivera.workers.dev';
+    const booksMinisite = 'https://books-minifront.vercel.app';
 
     function authorsApp() {
       return {

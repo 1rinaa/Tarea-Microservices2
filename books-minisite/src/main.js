@@ -5,6 +5,7 @@ import App from './App.vue'
 
 import './css/normalize.css';
 import './css/skeleton.css';
+import './css/global.css';
 
 import BookList from './BookList.vue'
 import BookDetail from './BookDetail.vue'
